@@ -1,0 +1,9 @@
+{
+  "name": "programmei-backend",
+  "version": "0.0.1",
+  "description": "Programmei API - a todo list backend",
+  "main": "index.js",
+  "repository": "https://github.com/rafaelgeronimo/programmei-backend",
+  "author": "Rafael Gerônimo",
+  "license": "MIT"
+}
