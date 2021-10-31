@@ -1,7 +1,7 @@
 const frisby = require('frisby');
 const { MongoClient } = require('mongodb');
 
-const mongodbUrl = 'mongodb://localhost:27017/programmei';
+const mongodbUrl = 'mongodb://localhost:27017/today';
 const url = 'http://localhost:3000';
 
 describe('Cadastra uma nova tarefa', () => {
@@ -13,7 +13,7 @@ describe('Cadastra uma nova tarefa', () => {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
-    db = connection.db('programmei');
+    db = connection.db('today');
   });
 
   beforeEach(async () => {

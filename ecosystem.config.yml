@@ -1,0 +1,7 @@
+apps:
+- name: today
+  script: src/server.js
+  exec_mode: cluster
+  instances: 2
+  max_memory_restart: 200M
+  watch: false
