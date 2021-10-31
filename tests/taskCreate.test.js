@@ -20,7 +20,7 @@ describe('Cadastra uma nova tarefa', () => {
     await db.collection('users').deleteMany({});
     await db.collection('tasks').deleteMany({});
     const users = {
-      name: 'admin', email: 'admin@email.com', password: 'admin', role: 'admin'
+      name: 'admin', email: 'admin@email.com', password: 'admin1', role: 'admin'
     };
     await db.collection('users').insertOne(users);
   });
@@ -33,7 +33,7 @@ describe('Cadastra uma nova tarefa', () => {
     await frisby
       .post(`${url}/login/`, {
         email: 'admin@email.com',
-        password: 'admin',
+        password: 'admin1',
       })
       .expect('status', 200)
       .then((response) => {
@@ -91,7 +91,7 @@ describe('Cadastra uma nova tarefa', () => {
     await frisby
       .post(`${url}/tasks/`, {
         email: 'admin@email.com',
-        password: 'admin',
+        password: 'admin1',
       })
       .expect('status', 200)
       .then((response) => {

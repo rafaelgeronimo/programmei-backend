@@ -1,4 +1,3 @@
-const { expect } = require('chai');
 const frisby = require('frisby');
 const { MongoClient } = require('mongodb');
 
@@ -21,7 +20,7 @@ describe('Realiza login de usuário', () => {
     await db.collection('users').deleteMany({});
     await db.collection('tasks').deleteMany({});
     const users = {
-      name: 'admin', email: 'admin@email.com', password: 'admin', role: 'admin'
+      name: 'admin', email: 'admin@email.com', password: 'admin1', role: 'admin'
     };
     await db.collection('users').insertOne(users);
   });
@@ -40,7 +39,7 @@ describe('Realiza login de usuário', () => {
       .then((response) => {
         const { body } = response;
         const result = JSON.parse(body);
-        expect(result.message).toBe('All fields must be filled');
+        expect(result.message).toBe('"email" is required');
       });
   });
 
@@ -54,7 +53,7 @@ describe('Realiza login de usuário', () => {
       .then((response) => {
         const { body } = response;
         const result = JSON.parse(body);
-        expect(result.message).toBe('All fields must be filled');
+        expect(result.message).toBe('"password" is required');
       });
   });
 
@@ -62,14 +61,14 @@ describe('Realiza login de usuário', () => {
     await frisby
       .post(`${url}/login/`,
       {
-        email: 'user@0.com',
+        email: 'user@.com',
         password: 'password@123',
       })
       .expect('status', 401)
       .then((response) => {
         const { body } = response;
         const result = JSON.parse(body);
-        expect(result.message).toBe('Incorrect username or password');
+        expect(result.message).toBe('"email" must be a valid email');
       });
   });
 
@@ -84,32 +83,21 @@ describe('Realiza login de usuário', () => {
       .then((response) => {
         const { body } = response;
         const result = JSON.parse(body);
-        expect(result.message).toBe('Incorrect username or password');
+        expect(result.message).toBe('"password" length must be at least 6 characters long');
       });
   });
 
   it('Será validado que é possível fazer login com sucesso', async () => {
     await frisby
-      .post(`${url}/users/`,
+      .post(`${url}/login`,
       {
-        email: 'user@email.com',
-        password: 'password@123',
+        email: 'admin@email.com',
+        password: 'admin1',
       })
-      .expect('status', 201)
-      .then((response) => {
-        const { body } = response;
-        const result = JSON.parse(body);
-        return frisby
-          .post(`${url}/login/`,
-          {
-            email: result.user.email,
-            password: 'password@123',
-          })
-          .expect('status', 200)
-          .then((responseLogin) => {
-            const { json } = responseLogin;
-            expect(json.token).not.toBeNull();
-          });
+      .expect('status', 200)
+      .then((responseLogin) => {
+        const { json } = responseLogin;
+        expect(json.token).not.toBeNull();
       });
   });
 });

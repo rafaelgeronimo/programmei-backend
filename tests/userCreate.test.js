@@ -20,7 +20,7 @@ describe('Cadastra um novo usuário', () => {
     await db.collection('users').deleteMany({});
     await db.collection('tasks').deleteMany({});
     const users = {
-      name: 'admin', email: 'admin@email.com', password: 'admin', role: 'admin'
+      name: 'admin', email: 'admin@email.com', password: 'admin1', role: 'admin'
     };
     await db.collection('users').insertOne(users);
   });
@@ -31,101 +31,226 @@ describe('Cadastra um novo usuário', () => {
 
   it('Será validado que o campo `name` é obrigatório', async () => {
     await frisby
-      .post(`${url}/users`,
-      {
-        email: 'user@email.com',
-        password: 'password@123',
-        avatar: 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png',
-        role: 'user',
+      .post(`${url}/login`, {
+        email: 'admin@email.com',
+        password: 'admin1',
       })
-      .expect('status', 400)
+      .expect('status', 200)
       .then((response) => {
         const { body } = response;
         const result = JSON.parse(body);
-        expect(result.message).toBe('Invalid entries. Try again.');
+        return frisby
+          .setup({
+            request: {
+              headers: {
+                Authorization: result.token,
+                'Content-Type': 'application/json',
+              },
+            },
+          })
+          .post(`${url}/users`,
+          {
+            email: 'user@email.com',
+            password: 'password@123',
+            avatar: 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png',
+            role: 'user',
+          })
+          .expect('status', 400)
+          .then((response) => {
+            const { body } = response;
+            const result = JSON.parse(body);
+            expect(result.message).toBe('"name" is required');
+          });
       });
   });
 
   it('Será validado que o campo `email` é obrigatório', async () => {
     await frisby
-      .post(`${url}/users`,
-      {
-        name: 'User Name',
-        password: 'password@123',
-        avatar: 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png',
-        role: 'user',
+      .post(`${url}/login`, {
+        email: 'admin@email.com',
+        password: 'admin1',
       })
-      .expect('status', 400)
+      .expect('status', 200)
       .then((response) => {
         const { body } = response;
         const result = JSON.parse(body);
-        expect(result.message).toBe('Invalid entries. Try again.');
+        return frisby
+          .setup({
+            request: {
+              headers: {
+                Authorization: result.token,
+                'Content-Type': 'application/json',
+              },
+            },
+          })
+          .post(`${url}/users`,
+          {
+            name: 'User Name',
+            password: 'password@123',
+            avatar: 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png',
+            role: 'user',
+          })
+          .expect('status', 400)
+          .then((response) => {
+            const { body } = response;
+            const result = JSON.parse(body);
+            expect(result.message).toBe('"email" is required');
+          });
       });
   });
 
   it('Será validado que não é possível cadastrar usuário com o campo `email` inválido', async () => {
     await frisby
-      .post(`${url}/users/`,
-      {
-        name: 'User Name',
-        email: 'username',
-        password: 'password@123',
-        avatar: 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png',
-        role: 'user',
+      .post(`${url}/login`, {
+        email: 'admin@email.com',
+        password: 'admin1',
       })
-      .expect('status', 400)
+      .expect('status', 200)
       .then((response) => {
         const { body } = response;
         const result = JSON.parse(body);
-        expect(result.message).toBe('Invalid entries. Try again.');
+        return frisby
+          .setup({
+            request: {
+              headers: {
+                Authorization: result.token,
+                'Content-Type': 'application/json',
+              },
+            },
+          })
+        .post(`${url}/users/`,
+        {
+          name: 'User Name',
+          email: 'username',
+          password: 'password@123',
+          avatar: 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png',
+          role: 'user',
+        })
+        .expect('status', 400)
+        .then((response) => {
+          const { body } = response;
+          const result = JSON.parse(body);
+          expect(result.message).toBe('"email" must be a valid email');
+        });
       });
   });
 
   it('Será validado que o campo `senha` é obrigatório', async () => {
     await frisby
-      .post(`${url}/users/`,
-      {
-        name: 'User Name',
-        email: 'user@email.com',
-        avatar: 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png',
-        role: 'user',
+      .post(`${url}/login`, {
+        email: 'admin@email.com',
+        password: 'admin1',
       })
-      .expect('status', 400)
+      .expect('status', 200)
       .then((response) => {
         const { body } = response;
         const result = JSON.parse(body);
-        expect(result.message).toBe('Invalid entries. Try again.');
+        return frisby
+          .setup({
+            request: {
+              headers: {
+                Authorization: result.token,
+                'Content-Type': 'application/json',
+              },
+            },
+          })
+        .post(`${url}/users/`,
+        {
+          name: 'User Name',
+          email: 'user@email.com',
+          avatar: 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png',
+          role: 'user',
+        })
+        .expect('status', 400)
+        .then((response) => {
+          const { body } = response;
+          const result = JSON.parse(body);
+          expect(result.message).toBe('"password" is required');
+        });
       });
   });
 
   it('Será validado que o campo `role` é obrigatório', async () => {
     await frisby
-      .post(`${url}/users/`, {
-        name: 'User name',
-        email: 'user@email.com',
-        avatar: 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png',
+      .post(`${url}/login`, {
+        email: 'admin@email.com',
+        password: 'admin1',
       })
-      .expect('status', 400)
+      .expect('status', 200)
       .then((response) => {
         const { body } = response;
         const result = JSON.parse(body);
-        expect(result.message).toBe('Invalid entries. Try again.');
+        return frisby
+          .setup({
+            request: {
+              headers: {
+                Authorization: result.token,
+                'Content-Type': 'application/json',
+              },
+            },
+          })
+        .post(`${url}/users/`, {
+          name: 'User name',
+          email: 'user@email.com',
+          password: 'password@123',
+          avatar: 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png',
+        })
+        .expect('status', 400)
+        .then((response) => {
+          const { body } = response;
+          const result = JSON.parse(body);
+          expect(result.message).toBe('"role" is required');
+        });
       });
   });
 
   it('Será validado que o campo `email` é único', async () => {
     await frisby
-      .post(`${url}/users/`,
-      {
-        name: 'User Name',
-        email: 'user@email.com',
-        password: 'password@123',
-        avatar: 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png',
-        role: 'user',
+      .post(`${url}/login`, {
+        email: 'admin@email.com',
+        password: 'admin1',
       })
-      .expect('status', 201)
-
+      .expect('status', 200)
+      .then((response) => {
+        const { body } = response;
+        const result = JSON.parse(body);
+        return frisby
+          .setup({
+            request: {
+              headers: {
+                Authorization: result.token,
+                'Content-Type': 'application/json',
+              },
+            },
+          })
+        .post(`${url}/users/`,
+        {
+          name: 'User Name',
+          email: 'user@email.com',
+          password: 'password@123',
+          avatar: 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png',
+          role: 'user',
+        })
+        .expect('status', 201)
+      })
       await frisby
+      .post(`${url}/login`, {
+        email: 'admin@email.com',
+        password: 'admin1',
+      })
+      .expect('status', 200)
+      .then((response) => {
+        const { body } = response;
+        const result = JSON.parse(body);
+        return frisby
+          .setup({
+            request: {
+              headers: {
+                Authorization: result.token,
+                'Content-Type': 'application/json',
+              },
+            },
+          })
         .post(`${url}/users/`,
         {
           name: 'User Name',
@@ -140,6 +265,7 @@ describe('Cadastra um novo usuário', () => {
           const result = JSON.parse(body);
           expect(result.message).toBe('Email already registered');
         });
+      });
   });
 
   it('Será validado que não é possível cadastrar um usuário com token inválido', async () => {
@@ -171,7 +297,7 @@ describe('Cadastra um novo usuário', () => {
     await frisby
       .post(`${url}/login`, {
         email: 'admin@email.com',
-        password: 'admin',
+        password: 'admin1',
       })
       .expect('status', 200)
       .then((response) => {
@@ -200,21 +326,37 @@ describe('Cadastra um novo usuário', () => {
 
   it('Será validado que é possível cadastrar usuário com sucesso', async () => {
     await frisby
-      .post(`${url}/users/`,
-      {
-        name: 'User Name',
-        email: 'user@email.com',
-        password: 'password@123',
-        avatar: 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png',
-        role: 'user',
+      .post(`${url}/login`, {
+        email: 'admin@email.com',
+        password: 'admin1',
       })
-      .expect('status', 201)
+      .expect('status', 200)
       .then((response) => {
         const { body } = response;
         const result = JSON.parse(body);
-        expect(result.user.name).toBe('User Name');
-        expect(result.user.email).toBe('user@email.com');
-        expect(result.user.avatar).toBe('https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png');
+        return frisby
+          .setup({
+            request: {
+              headers: {
+                Authorization: result.token,
+                'Content-Type': 'application/json',
+              },
+            },
+          })
+        .post(`${url}/users/`,
+        {
+          name: 'User Name',
+          email: 'user@email.com',
+          password: 'password@123',
+          avatar: 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png',
+          role: 'user',
+        })
+        .expect('status', 201)
+        .then((response) => {
+          const { body } = response;
+          const result = JSON.parse(body);
+          expect(result.message).toBe('User created successfully');
+        });
       });
   });
 });
