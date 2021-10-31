@@ -1,4 +1,4 @@
-app
+apps:
 - name: today
   script: src/server.js
   exec_mode: cluster
