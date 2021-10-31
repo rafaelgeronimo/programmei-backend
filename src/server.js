@@ -7,9 +7,12 @@ app.use(bodyParser.json());
 
 const PORT = process.env.PORT || 3000;
 
-const { userRouter } = require('./routers');
+const { userRouter, loginRouter } = require('./routers');
 
 // ---------- USER ---------- //
 app.use('/users', userRouter);
+
+// ---------- USER ---------- //
+app.use('/login', loginRouter);
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
