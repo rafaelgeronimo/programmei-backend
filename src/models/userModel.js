@@ -3,9 +3,9 @@ const connect = require('./connection');
 const createUser = async ({ name, email, password, avatar, role }) => {
   const db = await connect();
   const findUser = await db.collection('users').findOne({ email });
-  if (findUser) return { statusCode: 400, message: 'Usuário já cadastrado' };
+  if (findUser) return { statusCode: 409, message: 'Email already registered' };
   await db.collection('users').insertOne({ name, email, password, avatar, role });
-  return { statusCode: 200, message: 'Usuário criado com sucesso' };
+  return { statusCode: 201, message: 'User created successfully' };
 };
 
 const userLogin = async ({ email, password }) => {
@@ -16,7 +16,14 @@ const userLogin = async ({ email, password }) => {
   return { statusCode: 200, message: 'Login realizado com sucesso', findUser };
 }
 
+const verifyEmail = async (email) => {
+  const db = await connect();
+  const userData = await db.collection('users').findOne({ email });
+  return userData;
+};
+
 module.exports = {
   createUser,
   userLogin,
+  verifyEmail,
 };

@@ -7,10 +7,10 @@ app.use(bodyParser.json());
 
 const PORT = process.env.PORT || 3000;
 
-const { userRouter, loginRouter } = require('./routers');
+const { authMiddleware ,userRouter, loginRouter } = require('./routers');
 
 // ---------- USER ---------- //
-app.use('/users', userRouter);
+app.use('/users', authMiddleware, userRouter);
 
 // ---------- USER ---------- //
 app.use('/login', loginRouter);
