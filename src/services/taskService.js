@@ -1,8 +1,5 @@
-const jwt = require('jsonwebtoken');
 const validationSchema = require('../helpers/validationSchema');
 const taskModel = require('../models/taskModel');
-
-const { JWT_TOKEN } = process.env;
 
 const createTask = async (data) => {
   const { error } = validationSchema.taskSchema.validate(data);
