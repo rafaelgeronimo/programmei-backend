@@ -1,9 +1,9 @@
 {
-  "name": "programmei-backend",
+  "name": "today-backend",
   "version": "0.0.1",
-  "description": "Programmei API - a todo list backend",
+  "description": "Today API - a todo list backend",
   "main": "index.js",
-  "repository": "https://github.com/rafaelgeronimo/programmei-backend",
+  "repository": "https://github.com/rafaelgeronimo/today-backend",
   "author": "Rafael Gerônimo",
   "license": "MIT",
   "scripts": {
