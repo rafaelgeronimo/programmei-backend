@@ -11,9 +11,9 @@ const createUser = async ({ name, email, password, avatar, role }) => {
 const userLogin = async ({ email, password }) => {
   const db = await connect();
   const findUser = await db.collection('users').findOne({ email });
-  if (!findUser) return { statusCode: 400, message: 'Conta de usuário não existe' };
-  if (findUser.password !== password) return { statusCode: 400, message: 'Usuário ou senha incorreto' };
-  return { statusCode: 200, message: 'Login realizado com sucesso', findUser };
+  if (!findUser) return { statusCode: 400, message: 'User does not exist' };
+  if (findUser.password !== password) return { statusCode: 400, message: 'Wrong email or password' };
+  return { statusCode: 200, message: 'Login successfully', findUser };
 }
 
 const verifyEmail = async (email) => {

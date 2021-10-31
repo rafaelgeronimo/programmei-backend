@@ -58,7 +58,7 @@ describe('Cadastra uma nova tarefa', () => {
           .then((response) => {
             const { body } = response;
             const result = JSON.parse(body);
-            expect(result.message).toBe('Invalid entries. Try again.');
+            expect(result.message).toBe('"title" is required');
           });
       });
   });
@@ -89,7 +89,7 @@ describe('Cadastra uma nova tarefa', () => {
 
   it('Será validado que é possível cadastar uma tarefa com sucesso', async () => {
     await frisby
-      .post(`${url}/tasks/`, {
+      .post(`${url}/login/`, {
         email: 'admin@email.com',
         password: 'admin1',
       })
@@ -109,8 +109,8 @@ describe('Cadastra uma nova tarefa', () => {
           .post(`${url}/tasks/`, {
             title: 'Criar página de login',
             description: 'Desenvolver o frontend da página de login para o novo sistema da Ebyrt',
-            initialDate: '30/10/2021',
-            endDate: '05/11/2021',
+            initialDate: '2021/10/30',
+            endDate: '2021/11/05',
             taskDone: false,
           })
           .expect('status', 201)
