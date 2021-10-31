@@ -123,12 +123,3 @@ describe('Cadastra uma nova tarefa', () => {
       });
   });
 });
-
-/**
- * campos: title, description, initialDate, endDate, taskDone
- * title: 'Criar página de login',
-   description: 'Desenvolver o frontend da página de login para o novo sistema da Ebyrt',
-   initialDate: '30/10/2021',
-   endDate: '05/11/2021',
-   taskDone: false,
- */
