@@ -13,9 +13,14 @@ const createTask = async (data, userId) => {
 const getTasks = async () => {
   const { statusCode, tasks} = await taskModel.getTasks();
   return ({ statusCode, tasks });
-}
+};
+
+const getTaskById = async (id) => {
+  return { statusCode, task } = await taskModel.getTaskById(id);
+};
 
 module.exports = {
   createTask,
   getTasks,
+  getTaskById,
 };

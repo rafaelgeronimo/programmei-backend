@@ -16,7 +16,7 @@ const getAllUsers = async () => {
 
 const getUserById = async (id) => {
   return { statusCode, user } = await userModel.getUserById(id);
-}
+};
 
 const userLogin = async (data) => {
   const { error } = validationSchema.loginSchema.validate(data);

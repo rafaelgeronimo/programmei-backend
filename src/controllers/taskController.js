@@ -14,7 +14,16 @@ const getTasks = async (_req, res) => {
   return res.status(statusCode).json(tasks);
 }
 
+const getTaskById = async (req, res) => {
+  const { statusCode, task } = await taskService.getTaskById(req.params.id);
+  if (!task) {
+    return res.status(404).json({ message: 'Task not found' });
+  }
+  res.status(statusCode).json(task);
+};
+
 module.exports = {
   createTask,
   getTasks,
+  getTaskById,
 };

@@ -1,3 +1,4 @@
+const { ObjectID } = require('bson');
 const connect = require('./connection');
 
 const createTask = async ({ title, description, initialDate, endDate, taskDone }, userId) => {
@@ -14,7 +15,15 @@ const getTasks = async () => {
   return { statusCode: 200, tasks};
 }
 
+const getTaskById = async (id) => {
+  if (!ObjectID.isValid(id)) return { statusCode: 404, task: null };
+  const db = await connect();
+  const task = await db.collection('tasks').findOne({ _id: ObjectID(id) });
+  return { statusCode: 200, task };
+}
+
 module.exports = {
   createTask,
   getTasks,
+  getTaskById,
 };
