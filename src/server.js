@@ -7,12 +7,13 @@ const cors = require('cors');
 app.use(bodyParser.json());
 
 const PORT = process.env.PORT || 3000;
-const FRONTEND_PORT = process.env.FRONTEND_PORT;
+const FRONTEND_URL = process.env.FRONTEND_PORT;
 
 const { authMiddleware ,userRouter, loginRouter, taskRouter } = require('./routers');
 
 const corsOptions = {
-  origin: `http://localhost:${FRONTEND_PORT}`,
+  // origin: `http://localhost:${FRONTEND_PORT}`,
+  origin: `${FRONTEND_URL}`,
 };
 
 app.use(cors(corsOptions));

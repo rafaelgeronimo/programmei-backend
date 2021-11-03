@@ -21,7 +21,7 @@ const userLogin = async (data) => {
     const { password: _, ...userPayload } = findUser;
     const token = jwt.sign(userPayload, JWT_SECRET, {
       algorithm: 'HS256',
-      expiresIn: '30d',
+      expiresIn: '16h',
     });
     return ({ statusCode, message, user , token });
   }
