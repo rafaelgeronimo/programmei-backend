@@ -7,8 +7,13 @@ const { JWT_SECRET } = process.env;
 const createUser = async (data) => {
   const { error } = validationSchema.userSchema.validate(data);
   if (error) return { statusCode: 400, message: error.details[0].message };
-  const { statusCode, message } = await userModel.createUser(data);  
-  return { statusCode, message };
+  const { statusCode, message } = await userModel.createUser(data);
+  return (statusCode, message);
+};
+
+const getAllUsers = async () => {
+  const { statusCode, users} = await userModel.getAllUsers();
+  return ({ statusCode, users });
 };
 
 const userLogin = async (data) => {
@@ -26,9 +31,10 @@ const userLogin = async (data) => {
     return ({ statusCode, message, user , token });
   }
   return ({ statusCode, message });
-}
+};
 
 module.exports = {
   createUser,
   userLogin,
+  getAllUsers,
 };
