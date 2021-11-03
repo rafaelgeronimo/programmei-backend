@@ -11,7 +11,8 @@ const createUser = async ({ name, email, password, avatar, role }) => {
 
 const getAllUsers = async () => {
   const db = await connect();
-  const users = await db.collection('users').find({}).toArray();
+  const users = await db.collection('users').find({}, { password: 0 } ).toArray();
+  users.forEach((user) => delete user.password)
   return { statusCode: 200, users };
 };
 
@@ -19,6 +20,7 @@ const getUserById = async (id) => {
   if (!ObjectID.isValid(id)) return { statusCode: 404, user: null };
   const db = await connect();
   const user = await db.collection('users').findOne({ _id: ObjectID(id) });
+  delete(user.password);
   return { statusCode: 200, user };
 }
 
