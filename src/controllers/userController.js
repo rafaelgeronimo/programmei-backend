@@ -19,6 +19,14 @@ const getUserById = async (req, res) => {
   res.status(statusCode).json(user);
 }
 
+const updateUser = async (req, res) => {
+  const { id } = req.params;
+  const { name, email, password, avatar, role } = req.body;
+  const userDetails = ({ id, name, email, password, avatar, role });
+  const { statusCode, user } = await userService.updateUser(userDetails);
+  res.status(statusCode).json(user);
+}
+
 const userLogin = async (req, res) => {
   const data = req.body;
   const { statusCode, message, user, token } = await userService.userLogin(data);
@@ -30,4 +38,5 @@ module.exports = {
   userLogin,
   getAllUsers,
   getUserById,
+  updateUser,
 };

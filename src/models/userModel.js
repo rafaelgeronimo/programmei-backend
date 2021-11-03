@@ -24,6 +24,17 @@ const getUserById = async (id) => {
   return { statusCode: 200, user };
 }
 
+const updateUser = async (userDetails) => {
+  const { id, name, email, password, avatar, role } = userDetails;
+  if (!ObjectID.isValid(id)) return { statusCode: 404, user: null };
+  const db = await connect();
+  await db.collection('users')
+    .updateOne({ _id: ObjectID(id) },
+    { $set: { name, email, password, avatar, role } });
+  user = { id, name, email, avatar, role };
+  return { statusCode: 200, user };
+}
+
 const userLogin = async ({ email, password }) => {
   const db = await connect();
   const findUser = await db.collection('users').findOne({ email });
@@ -44,4 +55,5 @@ module.exports = {
   verifyEmail,
   getAllUsers,
   getUserById,
+  updateUser,
 };

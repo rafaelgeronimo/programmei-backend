@@ -18,6 +18,10 @@ const getUserById = async (id) => {
   return { statusCode, user } = await userModel.getUserById(id);
 };
 
+const updateUser = async (userDetails) => {
+  return { statusCode, user } = await userModel.updateUser(userDetails);
+};
+
 const userLogin = async (data) => {
   const { error } = validationSchema.loginSchema.validate(data);
   if (error) return { statusCode: 401, message: error.details[0].message };
@@ -40,4 +44,5 @@ module.exports = {
   userLogin,
   getAllUsers,
   getUserById,
+  updateUser,
 };
