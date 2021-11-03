@@ -35,6 +35,13 @@ const updateUser = async (userDetails) => {
   return { statusCode: 200, user };
 }
 
+const removeUser = async (id) => {
+  if (!ObjectID(id)) return { statusCode: 404, task: null };
+  const db = await connect();
+  await db.collection('users').deleteOne({ _id: ObjectID(id) });
+  return { statusCode: 204 };
+}
+
 const userLogin = async ({ email, password }) => {
   const db = await connect();
   const findUser = await db.collection('users').findOne({ email });
@@ -56,4 +63,5 @@ module.exports = {
   getAllUsers,
   getUserById,
   updateUser,
+  removeUser,
 };

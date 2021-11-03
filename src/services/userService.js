@@ -22,6 +22,10 @@ const updateUser = async (userDetails) => {
   return { statusCode, user } = await userModel.updateUser(userDetails);
 };
 
+const removeUser = async (id) => {
+  return { statusCode } = await userModel.removeUser(id);
+}
+
 const userLogin = async (data) => {
   const { error } = validationSchema.loginSchema.validate(data);
   if (error) return { statusCode: 401, message: error.details[0].message };
@@ -45,4 +49,5 @@ module.exports = {
   getAllUsers,
   getUserById,
   updateUser,
+  removeUser,
 };

@@ -27,6 +27,11 @@ const updateUser = async (req, res) => {
   res.status(statusCode).json(user);
 }
 
+const removeUser = async (req, res) => {
+  const { statusCode } = await userService.removeUser(req.params.id);
+  res.status(statusCode).json({});
+}
+
 const userLogin = async (req, res) => {
   const data = req.body;
   const { statusCode, message, user, token } = await userService.userLogin(data);
@@ -39,4 +44,5 @@ module.exports = {
   getAllUsers,
   getUserById,
   updateUser,
+  removeUser,
 };
