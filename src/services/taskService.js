@@ -1,4 +1,3 @@
-const jwt = require('jsonwebtoken');
 const validationSchema = require('../helpers/validationSchema');
 const taskModel = require('../models/taskModel');
 
