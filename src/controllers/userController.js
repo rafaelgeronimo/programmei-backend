@@ -3,7 +3,7 @@ const userService = require('../services/userService');
 const createUser = async (req, res) => {
   const data = req.body;
   const { statusCode, message } = await userService.createUser(data);
-  return res.status(statusCode).json({ message });
+  res.status(statusCode).json({ message });
 };
 
 const getAllUsers = async (_req, res) => {
@@ -11,14 +11,23 @@ const getAllUsers = async (_req, res) => {
   res.status(statusCode).json(users);
 };
 
+const getUserById = async (req, res) => {
+  const { statusCode, user } = await userService.getUserById(req.params.id);
+  if (!user) {
+    return res.status(404).json({ message: 'User not found' });
+  }
+  res.status(statusCode).json(user);
+}
+
 const userLogin = async (req, res) => {
   const data = req.body;
   const { statusCode, message, user, token } = await userService.userLogin(data);
-  return res.status(statusCode).json({ message, user, token });
+  res.status(statusCode).json({ message, user, token });
 };
 
 module.exports = {
   createUser,
   userLogin,
   getAllUsers,
+  getUserById,
 };

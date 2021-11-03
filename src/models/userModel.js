@@ -1,3 +1,4 @@
+const { ObjectID } = require('bson');
 const connect = require('./connection');
 
 const createUser = async ({ name, email, password, avatar, role }) => {
@@ -13,6 +14,13 @@ const getAllUsers = async () => {
   const users = await db.collection('users').find({}).toArray();
   return { statusCode: 200, users };
 };
+
+const getUserById = async (id) => {
+  if (!ObjectID.isValid(id)) return { statusCode: 404, user: null };
+  const db = await connect();
+  const user = await db.collection('users').findOne({ _id: ObjectID(id) });
+  return { statusCode: 200, user };
+}
 
 const userLogin = async ({ email, password }) => {
   const db = await connect();
@@ -33,4 +41,5 @@ module.exports = {
   userLogin,
   verifyEmail,
   getAllUsers,
+  getUserById,
 };
