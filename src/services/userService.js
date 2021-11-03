@@ -16,12 +16,14 @@ const userLogin = async (data) => {
   if (error) return { statusCode: 401, message: error.details[0].message };
   const { statusCode, message, findUser } = await userModel.userLogin(data);
   if (findUser) {
+    const { name, email, role, avatar } = findUser;
+    const user = ({ name, email, avatar, role });
     const { password: _, ...userPayload } = findUser;
     const token = jwt.sign(userPayload, JWT_SECRET, {
       algorithm: 'HS256',
-      expiresIn: '30d',
+      expiresIn: '16h',
     });
-    return ({ statusCode, message, token });
+    return ({ statusCode, message, user , token });
   }
   return ({ statusCode, message });
 }
