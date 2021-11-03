@@ -1,11 +1,11 @@
 const { ObjectID } = require('bson');
 const connect = require('./connection');
 
-const createTask = async ({ title, description, initialDate, endDate, taskDone }, userId) => {
+const createTask = async ({ title, description, initialDate, endDate, taskStatus }, userId) => {
   const db = await connect();
   const taskCreated = await db.collection('tasks')
-    .insertOne({ title, description, initialDate, endDate, taskDone, userId });
-  const task = ({ id: taskCreated.insertedId, title, description, initialDate, endDate, taskDone, userId });
+    .insertOne({ title, description, initialDate, endDate, taskStatus, userId });
+  const task = ({ id: taskCreated.insertedId, title, description, initialDate, endDate, taskStatus, userId });
   return { statusCode: 201, task };
 };
 

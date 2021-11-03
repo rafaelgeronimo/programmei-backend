@@ -20,7 +20,7 @@ const taskSchema = Joi.object({
   // initialDate: Joi.date().default(() => dayjs().format('DD/MM/YYYY')),
   initialDate: Joi.date(),
   endDate: Joi.date(),
-  taskDone: Joi.bool().required(),
+  taskStatus: Joi.string().required(),
 });
 
 module.exports = {
