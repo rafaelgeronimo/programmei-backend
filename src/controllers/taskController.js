@@ -22,8 +22,17 @@ const getTaskById = async (req, res) => {
   res.status(statusCode).json(task);
 };
 
+const updateTask = async (req, res) => {
+  const { id } = req.params;
+  const { title, description, initialDate, endDate, taskStatus } = req.body;
+  const taskDetails = ({ id, title, description, initialDate, endDate, taskStatus });
+  const { statusCode, task } = await taskService.updateTask(taskDetails);
+  res.status(statusCode).json(task);
+}
+
 module.exports = {
   createTask,
   getTasks,
   getTaskById,
+  updateTask,
 };

@@ -22,8 +22,20 @@ const getTaskById = async (id) => {
   return { statusCode: 200, task };
 }
 
+const updateTask = async (taskDetails) => {
+  const { id, title, description, initialDate, endDate, taskStatus } = taskDetails;
+  if (!ObjectID.isValid(id)) return { statusCode: 404, task: null };
+  const db = await connect();
+  await db.collection('tasks')
+    .updateOne({ _id: ObjectID(id) },
+    { $set: { title, description, initialDate, endDate, taskStatus } });
+  task = { id, title, description, initialDate, endDate, taskStatus };
+  return { statusCode: 200, task };
+};
+
 module.exports = {
   createTask,
   getTasks,
   getTaskById,
+  updateTask,
 };
