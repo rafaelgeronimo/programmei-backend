@@ -7,7 +7,7 @@ const cors = require('cors');
 app.use(bodyParser.json());
 
 const PORT = process.env.PORT || 3000;
-const FRONTEND_URL = process.env.FRONTEND_PORT;
+const FRONTEND_URL = process.env.FRONTEND_URL;
 
 const { authMiddleware ,userRouter, loginRouter, taskRouter } = require('./routers');
 
