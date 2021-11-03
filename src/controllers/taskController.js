@@ -30,9 +30,15 @@ const updateTask = async (req, res) => {
   res.status(statusCode).json(task);
 }
 
+const removeTask = async (req, res) => {
+  const { statusCode } = await taskService.removeTask(req.params.id);
+  res.status(statusCode).json({});
+}
+
 module.exports = {
   createTask,
   getTasks,
   getTaskById,
   updateTask,
+  removeTask,
 };

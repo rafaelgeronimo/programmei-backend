@@ -33,9 +33,17 @@ const updateTask = async (taskDetails) => {
   return { statusCode: 200, task };
 };
 
+const removeTask = async (id) => {
+  if (!ObjectID(id)) return { statusCode: 404, task: null };
+  const db = await connect();
+  await db.collection('tasks').deleteOne({ _id: ObjectID(id) });
+  return { statusCode: 204 };
+}
+
 module.exports = {
   createTask,
   getTasks,
   getTaskById,
   updateTask,
+  removeTask,
 };

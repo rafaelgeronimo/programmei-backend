@@ -21,6 +21,10 @@ const getTaskById = async (id) => {
 
 const updateTask = async (taskDetails) => {
   return { statusCode, task } = await taskModel.updateTask(taskDetails);
+};
+
+const removeTask = async (id) => {
+  return { statusCode } = await taskModel.removeTask(id);
 }
 
 module.exports = {
@@ -28,4 +32,5 @@ module.exports = {
   getTasks,
   getTaskById,
   updateTask,
+  removeTask,
 };
