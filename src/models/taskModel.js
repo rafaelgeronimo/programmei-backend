@@ -25,7 +25,7 @@ const getTaskById = async (id) => {
 const getTasksByUserId = async (userId) => {
   if (!ObjectID.isValid(userId)) return { statusCode: 404, tasks: null };
   const db = await connect();
-  const tasks = await db.collection('tasks').findOne({ userId: ObjectID(userId) });
+  const tasks = await db.collection('tasks').find({ userId: ObjectID(userId) }).toArray();
   return { statusCode: 200, tasks };
 };
 
