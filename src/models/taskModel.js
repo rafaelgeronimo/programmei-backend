@@ -13,14 +13,21 @@ const getTasks = async () => {
   const db = await connect();
   const tasks = await db.collection('tasks').find({}).toArray();
   return { statusCode: 200, tasks};
-}
+};
 
 const getTaskById = async (id) => {
   if (!ObjectID.isValid(id)) return { statusCode: 404, task: null };
   const db = await connect();
   const task = await db.collection('tasks').findOne({ _id: ObjectID(id) });
   return { statusCode: 200, task };
-}
+};
+
+const getTasksByUserId = async (userId) => {
+  if (!ObjectID.isValid(userId)) return { statusCode: 404, tasks: null };
+  const db = await connect();
+  const tasks = await db.collection('tasks').findOne({ userId: ObjectID(userId) });
+  return { statusCode: 200, tasks };
+};
 
 const updateTask = async (taskDetails) => {
   const { id, title, description, initialDate, endDate, taskStatus } = taskDetails;
@@ -46,4 +53,5 @@ module.exports = {
   getTaskById,
   updateTask,
   removeTask,
+  getTasksByUserId,
 };
