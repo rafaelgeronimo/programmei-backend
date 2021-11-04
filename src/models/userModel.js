@@ -28,9 +28,21 @@ const updateUser = async (userDetails) => {
   const { id, name, email, password, avatar, role } = userDetails;
   if (!ObjectID.isValid(id)) return { statusCode: 404, user: null };
   const db = await connect();
+  const findUser = await db.collection('users').findOne({ email });
+  if (findUser) {
+    const userIdDb = String(findUser._id);
+    const userIdParam = String(ObjectID(id));
+    if (userIdDb !== userIdParam) {
+      return { statusCode: 409, user: 'Email already registered' };
+    }
+  }
   await db.collection('users')
     .updateOne({ _id: ObjectID(id) },
-    { $set: { name, email, password, avatar, role } });
+    { $set: { name, email, avatar, role } });
+  if (password) {
+    await db.collection('users').updateOne({ _id: ObjectID(id)}, {
+      $set: { password } });
+  }
   user = { id, name, email, avatar, role };
   return { statusCode: 200, user };
 }
