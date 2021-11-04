@@ -16,7 +16,7 @@ const loginSchema = Joi.object({
 
 const taskSchema = Joi.object({
   title: Joi.string().required(),
-  description: Joi.string(),
+  description: Joi.string().allow('').optional(),
   // initialDate: Joi.date().default(() => dayjs().format('DD/MM/YYYY')),
   initialDate: Joi.date(),
   endDate: Joi.date(),

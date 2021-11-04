@@ -26,6 +26,7 @@ const getTasksByUserId = async (userId) => {
   if (!ObjectID.isValid(userId)) return { statusCode: 404, tasks: null };
   const db = await connect();
   const tasks = await db.collection('tasks').find({ userId: ObjectID(userId) }).toArray();
+  if(tasks.length === 0 ) return { statusCode: 404 };
   return { statusCode: 200, tasks };
 };
 
